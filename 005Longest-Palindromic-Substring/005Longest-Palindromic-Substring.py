@@ -1,20 +1,24 @@
 class Solution(object):
+
+    def __init__(self):
+        self.lo = 0
+        self.maxlen = 1
+        
     def longestPalindrome(self, s):
         """
         :type s: str
         :rtype: str
         """
-        if len(s)==0:
-        	return 0
-        maxLen=1
-        start=0
-        for i in xrange(len(s)):
-        	if i-maxLen >=1 and s[i-maxLen-1:i+1]==s[i-maxLen-1:i+1][::-1]:
-        		start=i-maxLen-1
-        		maxLen+=2
-        		continue
+        for i in range(len(s)):
+            self.__extendPalindrome(s, i, i)
+            self.__extendPalindrome(s, i, i+1)
+        return s[self.lo : self.lo + self.maxlen]
+    
+    def __extendPalindrome(self, s, left, right):
+        while(left >= 0 and right < len(s) and s[left] == s[right]):
+            left -= 1
+            right += 1
+        if self.maxlen < right - left - 1:
+            self.lo = left + 1
+            self.maxlen = right - left - 1
 
-        	if i-maxLen >=0 and s[i-maxLen:i+1]==s[i-maxLen:i+1][::-1]:
-        		start=i-maxLen
-        		maxLen+=1
-        return s[start:start+maxLen]
